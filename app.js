@@ -2,23 +2,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors');
+const bodyParser = require("body-parser");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+app.use(bodyParser.json({limit: '10mb', extended: true}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-
-const jsPDF = require("jspdf");
+// const jsPDF = require("jspdf");
 
 // Default export is a4 paper, portrait, using millimeters for units
 
@@ -49,18 +52,18 @@ const options = {
 
 const htmlStr = '<div>Hello</div>';
 
-try {
-  const doc = new jsPDF.jsPDF();
-  doc.html(htmlStr, {
-    callback: function (doc) {
-      console.log(`pdf created`);
-      doc.save();
-    },
-    x: 10,
-    y: 10
-  });
-} catch(e) {
-  console.error('error on pdf creating: ' + e);
-}
+// try {
+//   const doc = new jsPDF.jsPDF();
+//   doc.html(htmlStr, {
+//     callback: function (doc) {
+//       console.log(`pdf created`);
+//       doc.save();
+//     },
+//     x: 10,
+//     y: 10
+//   });
+// } catch(e) {
+//   console.error('error on pdf creating: ' + e);
+// }
 
 module.exports = app;

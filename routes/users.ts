@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const fs = require('fs');
-const pdfPrinter = require("pdf-to-printer");
+// const pdfPrinter = require("pdf-to-printer");
 const printers = require('../utils/printersConst');
 
 /* GET users listing. */
@@ -19,7 +19,7 @@ router.post('/printPackageLabel', function(req, res) {
     // console.log('count', count)
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 8);
-    const fileName = `${timestamp}_${randomString}`;
+    const fileName = `${timestamp}_${1}`;
    
     fs.writeFile(`public/uploads/${fileName}.pdf`,fileData, (err) => {
       if (err) {
@@ -36,19 +36,19 @@ router.post('/printPackageLabel', function(req, res) {
             printDialog: false,
             copies: count
           };
-          pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
-            .then((result) => {
-              console.log('result on printing: ' + result);
-            })
-            .catch((err) => {
-              console.error('error on printing: ' + err);
-            })
-            .finally(() => {
-              fs.unlink(`public/uploads/${fileName}.pdf`, (err) => {
-                if (err) console.log(err); // если возникла ошибка    
-                else console.log(`${fileName} was deleted`);
-              });
-            })
+        //   pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
+        //     .then((result) => {
+        //       console.log('result on printing: ' + result);
+        //     })
+        //     .catch((err) => {
+        //       console.error('error on printing: ' + err);
+        //     })
+        //     .finally(() => {
+        //       fs.unlink(`public/uploads/${fileName}.pdf`, (err) => {
+        //         if (err) console.log(err); // если возникла ошибка    
+        //         else console.log(`${fileName} was deleted`);
+        //       });
+        //     })
         }   
         res.status(200).send('Файл успешно сохранен');
       }

@@ -10,8 +10,8 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
-app.use(bodyParser.json({limit: '10mb', extended: true}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({limit: '50mb', extended: true}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

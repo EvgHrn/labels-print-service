@@ -32,7 +32,7 @@ router.post('/printPackageLabel', function(req, res) {
             printer: findRightPrinter.printer,
             // pages: "1-3,5",
             scale: "fit",
-            paperSize: 'USER',
+            paperSize: '56x98',
             printDialog: false,
             copies: count
           };

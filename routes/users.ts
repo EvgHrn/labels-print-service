@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var pdfPrinter = require("pdf-to-printer");
-var printers = require('../utils/printersConst');
+var printersToPrint = require('../utils/printersConst');
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
 router.post('/printPackageLabel', function(req, res) {
-  console.log(`${new Date().toLocaleString('ru')} New label with body:`, req.body);
+  console.log(`${new Date().toLocaleString('ru')} New label with:`, req.body.location, req.body.department, req.body.count);
   try {
     const {location, department, count} = req.body
     const [mediaType, base64Data] = req.body.label.split(',');
@@ -23,7 +23,7 @@ router.post('/printPackageLabel', function(req, res) {
         console.error(`${new Date().toLocaleString('ru')} Writing pdf error:`, err);
         res.status(500).send('Ошибка при сохранении файла');
       } else {
-        const findRightPrinter = printers.find((el) => el.location === location && el.department === department);
+        const findRightPrinter = printersToPrint.find((el) => el.location === location && el.department === department);
         if(findRightPrinter) {
           const options = {
             printer: findRightPrinter.printer,

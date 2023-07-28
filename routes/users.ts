@@ -20,7 +20,7 @@ router.post('/printPackageLabel', function(req, res) {
 
     fs.writeFile(`public/uploads/${fileName}.pdf`,fileData, (err) => {
       if(err) {
-        console.error(err);
+        console.error(`${new Date().toLocaleString('ru')} Writing pdf error:`, err);
         res.status(500).send('Ошибка при сохранении файла');
       } else {
         const findRightPrinter = printers.find((el) => el.location === location && el.department === department);
@@ -41,7 +41,7 @@ router.post('/printPackageLabel', function(req, res) {
             })
             .finally(() => {
               fs.unlink(`public/uploads/${fileName}.pdf`, (err) => {
-               if (err) console.error(err); // если возникла ошибка
+               if (err) console.error(`${new Date().toLocaleString('ru')} Delete pdf error:`, err); // если возникла ошибка
                else console.log(`${fileName} was deleted`);
               });
             })
@@ -52,7 +52,7 @@ router.post('/printPackageLabel', function(req, res) {
       }
     });
   } catch (error) {
-    console.error(`${new Date().toLocaleString('ru')} Ошибка при печати этикетки:`, error);
+    console.error(`${new Date().toLocaleString('ru')} Error:`, error);
     // Возвращаем ошибку, если что-то пошло не так
     res.status(500).json({ error: 'Ошибка при печати этикетки' });
   }

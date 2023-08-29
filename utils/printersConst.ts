@@ -20,7 +20,7 @@ const printers = [
     location: 'Ст. Разина',
     department: 'Склад мини',
     printer: '4BARCODE 2B-2023B',
-    paperSize: '57x40'
+    paperSize: '57x40',
   },
   {
     location: 'Ст. Разина',

@@ -60,7 +60,7 @@ router.post('/printPackageLabel', function(req, res) {
   } catch (error) {
     console.error(`${new Date().toLocaleString('ru')} Error:`, error);
     // Возвращаем ошибку, если что-то пошло не так
-    res.status(500).json({ error: 'Ошибка при печати этикетки' });
+    res.status(500).send('Ошибка печати этикетки');
     return;
   }
 });

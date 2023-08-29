@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var pdfPrinter = require("pdf-to-printer");
-var printersToPrint = require('../utils/printersConst');
+const printersToPrint = require('../utils/printersConst')
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -12,6 +12,7 @@ router.post('/printPackageLabel', function(req, res) {
   console.log(`${new Date().toLocaleString('ru')} New label with:`, req.body.location, req.body.department, req.body.count);
   try {
     const {location, department, count} = req.body
+    console.log('req.body', req.body)
     const [mediaType, base64Data] = req.body.label.split(',');
     const fileData = Buffer.from(base64Data, 'base64');
     const timestamp = Date.now();

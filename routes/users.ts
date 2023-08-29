@@ -35,13 +35,13 @@ router.post('/printPackageLabel', function(req, res) {
           };
           pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
             .then((result) => {
-              console.log(`${new Date().toLocaleString('ru')} result on printing: ` + result);
+              console.log(`${new Date().toLocaleString('ru')} Printing result: `, result);
               res.status(200);
               return;
             })
             .catch((err) => {
-              console.error(`${new Date().toLocaleString('ru')} error on printing: ` + err);
-              res.status(200);
+              console.error(`${new Date().toLocaleString('ru')} Printing error: `, err);
+              res.status(500).send(`Ошибка печати`);
               return;
             })
             .finally(() => {
@@ -51,6 +51,7 @@ router.post('/printPackageLabel', function(req, res) {
               });
             })
         } else {
+          console.error(`${new Date().toLocaleString('ru')} Printer not find with:`, location, department);
           res.status(500).send('Принтер не найден');
           return;
         }

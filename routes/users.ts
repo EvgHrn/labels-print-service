@@ -22,6 +22,7 @@ router.post('/printPackageLabel', function(req, res) {
       if(err) {
         console.error(`${new Date().toLocaleString('ru')} Writing pdf error:`, err);
         res.status(500).send('Ошибка при сохранении файла');
+        return;
       } else {
         const findRightPrinter = printersToPrint.find((el) => el.location === location && el.department === department);
         if(findRightPrinter) {
@@ -35,9 +36,13 @@ router.post('/printPackageLabel', function(req, res) {
           pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
             .then((result) => {
               console.log(`${new Date().toLocaleString('ru')} result on printing: ` + result);
+              res.status(200);
+              return;
             })
             .catch((err) => {
               console.error(`${new Date().toLocaleString('ru')} error on printing: ` + err);
+              res.status(200);
+              return;
             })
             .finally(() => {
               fs.unlink(`public/uploads/${fileName}.pdf`, (err) => {
@@ -47,14 +52,15 @@ router.post('/printPackageLabel', function(req, res) {
             })
         } else {
           res.status(500).send('Принтер не найден');
+          return;
         }
-        res.status(200).send('Файл успешно сохранен');
       }
     });
   } catch (error) {
     console.error(`${new Date().toLocaleString('ru')} Error:`, error);
     // Возвращаем ошибку, если что-то пошло не так
     res.status(500).json({ error: 'Ошибка при печати этикетки' });
+    return;
   }
 });
 

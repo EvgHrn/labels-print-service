@@ -12,7 +12,7 @@ router.post('/printPackageLabel', function(req, res) {
   console.log(`${new Date().toLocaleString('ru')} New label with:`, req.body.location, req.body.department, req.body.count);
   try {
     const {location, department, count} = req.body
-    console.log('req.body', req.body)
+    // console.log('req.body', req.body)
     const [mediaType, base64Data] = req.body.label.split(',');
     const fileData = Buffer.from(base64Data, 'base64');
     const timestamp = Date.now();
@@ -27,17 +27,20 @@ router.post('/printPackageLabel', function(req, res) {
       } else {
         const findRightPrinter = printersToPrint.find((el) => el.location === location && el.department === department);
         if(findRightPrinter) {
-          const options = {
+          const options: any = {
             printer: findRightPrinter.printer,
             scale: "fit",
             paperSize: findRightPrinter.paperSize,
             printDialog: false,
-            copies: count
+            copies: count,
           };
+          if('orientation' in findRightPrinter) {
+            options.orientation = findRightPrinter.orientation;
+          }
           pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
             .then((result) => {
               console.log(`${new Date().toLocaleString('ru')} Printing result: `, result);
-              res.status(200);
+              res.status(200).end();
               return;
             })
             .catch((err) => {

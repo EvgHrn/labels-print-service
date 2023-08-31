@@ -15,12 +15,14 @@ const printers = [
     location: 'Ст. Разина',
     department: 'Склад',
     printer: 'TSC DA220 centr sklad',
+    paperSize: '56x98'
   },
   {
     location: 'Ст. Разина',
     department: 'Склад мини',
     printer: '4BARCODE 2B-2023B',
     paperSize: '57x40',
+    orientation: 'landscape'
   },
   {
     location: 'Ст. Разина',

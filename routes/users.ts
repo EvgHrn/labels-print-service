@@ -27,7 +27,7 @@ router.post('/printPackageLabel', function(req, res) {
       } else {
         const findRightPrinter = printersToPrint.find((el) => el.location === location && el.department === department);
         if(findRightPrinter) {
-          const options = {
+          const options: any = {
             printer: findRightPrinter.printer,
             scale: "fit",
             paperSize: findRightPrinter.paperSize,
@@ -38,7 +38,7 @@ router.post('/printPackageLabel', function(req, res) {
           pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
             .then((result) => {
               console.log(`${new Date().toLocaleString('ru')} Printing result: `, result);
-              
+              res.status(200).end();
               return;
             })
             .catch((err) => {

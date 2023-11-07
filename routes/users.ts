@@ -34,6 +34,9 @@ router.post('/printPackageLabel', function(req, res) {
             printDialog: false,
             copies: fromTimer ? count : 1
           };
+          if('orientation' in findRightPrinter) {
+            options.orientation = findRightPrinter.orientation;
+          }
           res.status(200).end();
           pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
             .then((result) => {

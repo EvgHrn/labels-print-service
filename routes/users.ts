@@ -32,7 +32,7 @@ router.post('/printPackageLabel', function(req, res) {
             scale: "fit",
             paperSize: findRightPrinter.paperSize,
             printDialog: false,
-            copies: fromTimer ? count : 1
+            copies: 1
           };
           if('orientation' in findRightPrinter) {
             options.orientation = findRightPrinter.orientation;

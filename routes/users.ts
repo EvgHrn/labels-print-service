@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs');
-var pdfPrinter = require("pdf-to-printer");
+const fs = require('fs');
+const pdfPrinter = require("pdf-to-printer");
 const printersToPrint = require('../utils/printersConst')
 
 router.get('/', function(req, res, next) {
@@ -38,6 +38,7 @@ router.post('/printPackageLabel', function(req, res) {
             options.orientation = findRightPrinter.orientation;
           }
           res.status(200).end();
+          pdfPrinter.getPrinters().then((printers) => console.log(`${new Date().toLocaleString('ru')} Printers: `, printers));
           pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
             .then((result) => {
               console.log(`${new Date().toLocaleString('ru')} Printing result: `, result);

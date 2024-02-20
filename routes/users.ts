@@ -27,35 +27,63 @@ router.post('/printPackageLabel', function(req, res) {
       } else {
         const findRightPrinter = printersToPrint.find((el) => el.location === location && el.department === department);
         if(findRightPrinter) {
-          const options: any = {
-            printer: findRightPrinter.printer,
-            scale: "fit",
-            paperSize: findRightPrinter.paperSize,
-            printDialog: false,
-            copies: 1
-          };
-          if('orientation' in findRightPrinter) {
-            options.orientation = findRightPrinter.orientation;
-          }
-          res.status(200).end();
-          pdfPrinter.getPrinters().then((printers) => console.log(`${new Date().toLocaleString('ru')} Printers: `, printers));
-          pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
-            .then((result) => {
-              console.log(`${new Date().toLocaleString('ru')} Printing result: `, result);
+          pdfPrinter.getPrinters()
+            .then((printers) => {
+              // {
+              //   deviceId: 'TSC DA220 nagradka sklad C',
+            //     name: 'TSC DA220 nagradka sklad C',
+              //   paperSizes: [ 'USER', '2 x 4', '4 x 4', '4 x 6' ]
+              // },
+              console.log(`${new Date().toLocaleString('ru')} Printers: `, printers);
+              return printers.some((printer: {deviceId: string, name: string, paperSizes: string[]}) => printer.name === findRightPrinter.printer);
+            })
+            .then((isTherePrinter: boolean) => {
+
+              if(!isTherePrinter) {
+                console.error(`${new Date().toLocaleString('ru')} Printer not find with:`, location, department, findRightPrinter.printer);
+                res.status(500).send(`Принтер ${findRightPrinter.printer} не найден`);
+                return;
+              } else {
+                console.log(`${new Date().toLocaleString('ru')} Printer found ${findRightPrinter.printer}`);
+              }
+
+              const options: any = {
+                printer: findRightPrinter.printer,
+                scale: "fit",
+                paperSize: findRightPrinter.paperSize,
+                printDialog: false,
+                copies: 1
+              };
+
+              if('orientation' in findRightPrinter) {
+                options.orientation = findRightPrinter.orientation;
+              }
+
               res.status(200).end();
+
+              pdfPrinter.print(`public/uploads/${fileName}.pdf`, options)
+                .then((result) => {
+                  console.log(`${new Date().toLocaleString('ru')} Printing result: `, result);
+                  res.status(200).end();
+                  return;
+                })
+                .catch((err) => {
+                  console.error(`${new Date().toLocaleString('ru')} Printing error: `, err);
+                  res.status(500).send(`Ошибка печати`);
+                  return;
+                })
+                .finally(() => {
+                  fs.unlink(`public/uploads/${fileName}.pdf`, (err) => {
+                    if (err) console.error(`${new Date().toLocaleString('ru')} Delete pdf error:`, err); // если возникла ошибка
+                    else console.log(`${new Date().toLocaleString('ru')} ${fileName} was deleted`);
+                  });
+                })
+            })
+            .catch((e) => {
+              console.error(`${new Date().toLocaleString('ru')} Printer error:`, e);
+              res.status(500).send('Ошибка печати этикетки');
               return;
-            })
-            .catch((err) => {
-              console.error(`${new Date().toLocaleString('ru')} Printing error: `, err);
-              res.status(500).send(`Ошибка печати`);
-              return;
-            })
-            .finally(() => {
-              fs.unlink(`public/uploads/${fileName}.pdf`, (err) => {
-               if (err) console.error(`${new Date().toLocaleString('ru')} Delete pdf error:`, err); // если возникла ошибка
-               else console.log(`${fileName} was deleted`);
-              });
-            })
+            });
         } else {
           console.error(`${new Date().toLocaleString('ru')} Printer not find with:`, location, department);
           res.status(500).send('Принтер не найден');

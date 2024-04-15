@@ -36,5 +36,11 @@ const printers = [
     printer: 'TSC DA220 metallka upak',
     paperSize: '56x98'
   },
+  {
+    location: 'Ст. Разина',
+    department: 'Склад',
+    printer: '4B-2054A Dolgoprudnyi',
+    paperSize: '57х29'
+  },
 ];
 module.exports = printers;

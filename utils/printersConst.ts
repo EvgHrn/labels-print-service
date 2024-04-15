@@ -40,7 +40,8 @@ const printers = [
     location: 'Долгопрудный',
     department: 'Склад мини',
     printer: '4B-2054A Dolgoprudnyi',
-    paperSize: '57х29'
+    paperSize: '57x29',
+    orientation: 'landscape'
   },
 ];
 module.exports = printers;

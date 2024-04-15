@@ -38,7 +38,7 @@ const printers = [
   },
   {
     location: 'Ст. Разина',
-    department: 'Склад',
+    department: 'Склад мини',
     printer: '4B-2054A Dolgoprudnyi',
     paperSize: '57х29'
   },

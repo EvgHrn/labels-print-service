@@ -81,7 +81,7 @@ router.post('/printPackageLabel', function(req, res) {
             })
             .catch((e) => {
               console.error(`${new Date().toLocaleString('ru')} Printer error:`, e);
-              res.status(500).send('Ошибка печати этикетки');
+              res.status(500).send('Ошибка печати этикетки: ошибка получения списка принтеров');
               return;
             });
         } else {

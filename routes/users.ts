@@ -9,9 +9,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/printPackageLabel', function(req, res) {
-  console.log(`${new Date().toLocaleString('ru')} New label with:`, req.body.location, req.body.department, req.body.count);
+  console.log(`${new Date().toLocaleString('ru')} New label with:`, req.body.location, req.body.department, req.body.printer, req.body.count);
   try {
-    const {location, department, count, fromTimer} = req.body
+    const {location, department, printer, count, fromTimer} = req.body
     // console.log('req.body', req.body)
     const [mediaType, base64Data] = req.body.label.split(',');
     const fileData = Buffer.from(base64Data, 'base64');
@@ -25,7 +25,11 @@ router.post('/printPackageLabel', function(req, res) {
         res.status(500).send('Ошибка при сохранении файла');
         return;
       } else {
-        const findRightPrinter = printersToPrint.find((el) => el.location === location && el.department === department);
+
+        let findRightPrinter =
+            printersToPrint.find(p => p.printer === printer) ||
+            printersToPrint.find(el => el.location === location && el.department === department);
+
         if(findRightPrinter) {
           pdfPrinter.getPrinters()
             .then((printers) => {
@@ -96,6 +100,26 @@ router.post('/printPackageLabel', function(req, res) {
     // Возвращаем ошибку, если что-то пошло не так
     res.status(500).send('Ошибка печати этикетки');
     return;
+  }
+});
+
+router.post('/getPrintersByLocation', (req, res) => {
+  try {
+    const { location, department } = req.body;
+
+    if (!location || !department) {
+      console.error('Ошибка: отсутствует локация или участок:');
+      return res.status(400).json({ error: 'Требуются локация и участок' });
+    }
+
+    const filteredPrinters = printersToPrint
+        .filter(p => p.location === location && p.department === department)
+        .map(p => p.printer);
+
+    res.json({ printers: filteredPrinters });
+  } catch (error) {
+    console.error('Ошибка в getPrintersByLocation:', error);
+    res.status(500).json({ error: 'ошибка сервиса' });
   }
 });
 

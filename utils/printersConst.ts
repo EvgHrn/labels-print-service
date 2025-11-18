@@ -26,7 +26,7 @@ const printers = [
   {
     location: 'Ст. Разина',
     department: 'Склад мини',
-    printer: '4BARCODE 2B-2023B',
+    printer: 'BS3 Wi-Fi',
     paperSize: '57x40',
     orientation: 'landscape'
   },
@@ -48,6 +48,12 @@ const printers = [
     printer: '4B-2054A Dolgoprudnyi',
     paperSize: '57x29',
     orientation: 'landscape'
+  },
+  {
+    location: 'Ст. Разина',
+    department: 'Маркетинг',
+    printer: 'BS460D marketing',
+    paperSize: '56x98'
   },
 ];
 module.exports = printers;

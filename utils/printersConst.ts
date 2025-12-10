@@ -55,5 +55,11 @@ const printers = [
     printer: 'BS460D marketing',
     paperSize: '56x98'
   },
+  {
+    location: 'Ст. Разина',
+    department: 'Упаковка',
+    printer: 'BS460D marketing',
+    paperSize: '56x98'
+  }
 ];
 module.exports = printers;

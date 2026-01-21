@@ -60,6 +60,37 @@ const printers = [
     department: 'Упаковка',
     printer: 'BS460D marketing',
     paperSize: '56x98'
+  },
+  {
+    location: 'Гагарина',
+    department: 'Упаковка',
+    printer: 'TSC DA220 razin upak',
+    paperSize: '56x98'
+  },
+  {
+    location: 'Гагарина',
+    department: 'Склад',
+    printer: 'TSC DA220 centr sklad',
+    paperSize: '56x98'
+  },
+  {
+    location: 'Гагарина',
+    department: 'Склад мини',
+    printer: '4BARCODE 2B-2023B',
+    paperSize: '57x40',
+    orientation: 'landscape'
+  },
+  {
+    location: 'Гагарина',
+    department: 'Участок наградки',
+    printer: 'TSC DA220 nagradka sklad C',
+    paperSize: '56x98'
+  },
+  {
+    location: 'Гагарина',
+    department: 'Цех металлоконструкций',
+    printer: 'TSC DA220 metallka upak',
+    paperSize: '56x98'
   }
 ];
 module.exports = printers;
